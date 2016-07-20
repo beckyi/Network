@@ -20,8 +20,10 @@ public class TCPServer {
 
 			// 2.바인딩
 			InetAddress inetAddress = InetAddress.getLocalHost(); // local address(호스트를 IP주소로 전환)
-															
+			//LocalHost -> 로컬주인
+			
 			String serverAddress = inetAddress.getHostAddress();
+			//로컬 주소
 			InetSocketAddress inetSocketAddress = new InetSocketAddress(serverAddress, SERVER_PORT); // IP,Port
 			
 			serverSocket.bind(inetSocketAddress);

@@ -1,43 +1,44 @@
-package kr.ac.sungkyul.network.echo;
+package kr.ac.sungkyul.network.chat;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EchoServer3 {
-	private static final int SERVER_PORT = 3000;
+public class ChatServer {
+	private final static int SERVER_PORT = 3000;
 
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;
-		
+		List<Writer> listWriters = new ArrayList<Writer>();
 
 		try {
-			// 서버 소켓 생성
 			serverSocket = new ServerSocket();
 
-			// 바인딩
 			InetAddress inetAddress = InetAddress.getLocalHost();
-			String localHostAddress = inetAddress.getHostAddress();
-			InetSocketAddress inetSocketAddress = new InetSocketAddress(localHostAddress, SERVER_PORT);
+			String serverAddress = inetAddress.getHostAddress();
+			InetSocketAddress inetSocketAddress = new InetSocketAddress(serverAddress, SERVER_PORT);
+
 			serverSocket.bind(inetSocketAddress);
-			System.out.println("[echo server] binding " + localHostAddress + ":" + SERVER_PORT);
+			System.out.println("[Server bind] - " + serverAddress + ": " + SERVER_PORT);
 
 			while (true) {
-				// accept: 연결 요청 대기
 				Socket socket = serverSocket.accept();
 
-				EchoServer3ReceiveThread thread = new EchoServer3ReceiveThread(socket);
+				ChatServerThread thread = new ChatServerThread(socket, listWriters);
 				thread.start();
 			}
 
+		} catch (SocketException e) {
+			System.out.println("[Server] 비정상적으로 클라이언트가 연결을 끊었습니다.");
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -46,9 +47,10 @@ public class EchoServer3 {
 					serverSocket.close();
 				}
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 	}
+
 }
