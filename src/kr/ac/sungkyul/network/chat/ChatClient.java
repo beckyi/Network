@@ -51,6 +51,8 @@ public class ChatClient {
 				}
 
 				if ("quit".equals(data) == true) {
+					pw.println("quit:");
+					pw.flush();
 					break;
 				} else {
 					// 메세지처리				// Send Message

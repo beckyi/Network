@@ -17,8 +17,13 @@ public class EchoServer {
 		ServerSocket serverSocket = null;
 		
 		try {
+			//서버소켓생성
 			serverSocket = new ServerSocket();
 			
+			//Time-wait 상태에서 포트 재할당을 가능하게 하기 위하여
+			serverSocket.setReuseAddress(true);
+			
+			//바인딩
 			InetAddress inetAddress = InetAddress.getLocalHost();
 			String serverAddress = inetAddress.getHostAddress();
 			InetSocketAddress inetSocketAddress = new InetSocketAddress(serverAddress,SERVER_PORT);

@@ -57,7 +57,7 @@ public class ChatServerThread extends Thread {
 				} else if("quit".equals(tokens[0])){
 					doQuit(pw);
 				} else{
-//					ChatServer.log("에러: 알 수 없는 요청("+tokens[0]+")");
+					System.out.println("에러: 알 수 없는 요청("+tokens[0]+")");
 				}
 
 				// 출력
@@ -87,7 +87,7 @@ public class ChatServerThread extends Thread {
 		String data = nickname + "님이 입장하였습니다.";
 		broadcast(data);
 		
-		addWriter(writer);
+		addWriter(writer);	//나중에 추가하여 나 제외한 사람들에게 뿌려줌
 
 		//ack
 		pw.println("join:ok");
